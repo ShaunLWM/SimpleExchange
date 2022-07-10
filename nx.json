@@ -15,14 +15,21 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"],
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ],
         "accessToken": "MTViZTk0ZTItMDFhZC00OGRhLTk0MTItOGUzMjFiMzk2ODlifHJlYWQtd3JpdGU="
       }
     }
   },
   "targetDefaults": {
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": [
+        "^build"
+      ]
     }
   },
   "workspaceLayout": {
@@ -32,15 +39,11 @@
   "generators": {
     "@nrwl/react": {
       "application": {
-        "style": "styled-components",
         "linter": "eslint",
         "babel": true
       },
-      "component": {
-        "style": "styled-components"
-      },
+      "component": {},
       "library": {
-        "style": "styled-components",
         "linter": "eslint"
       }
     }

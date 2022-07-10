@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "noImplicitAny": true,
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
