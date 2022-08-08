@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "watch": "tsc --watch",
-    "start": "nodemon dist",
+    "start": "nodemon dist/main.js",
     "init": "tsc --init"
   },
   "devDependencies": {
