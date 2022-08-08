@@ -367,10 +367,10 @@ ipaddr.js@1.9.1:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-lob.js@^0.0.2-alpha.6:
-  version "0.0.2-alpha.6"
-  resolved "https://registry.yarnpkg.com/lob.js/-/lob.js-0.0.2-alpha.6.tgz#329e263fd5372004f1894fcfbdd6cf8f43de5d70"
-  integrity sha512-0nuX+BKRPOvU18WV8gZaQFwRChRZl96oQH6uRvcaJ1yyGFAHQWF1bE0ayVFKuJRl+k+24lRREW3Mh9z0DGdnrA==
+lob.js@^0.0.2-alpha.7:
+  version "0.0.2-alpha.7"
+  resolved "https://registry.yarnpkg.com/lob.js/-/lob.js-0.0.2-alpha.7.tgz#8a7cac0a30140a9261fda09ecea5e561af4bbd4e"
+  integrity sha512-uFU+B8zt+ahYRLtiEiAyDe283KppCBcxcgYU1rsV8tyDK1u8y8KZPhQ/9xyZ/8EdS4fQHjAs6ARkXjvjSxrYmQ==
   dependencies:
     bignumber.js "^9.0.2"
     denque "^2.0.1"
