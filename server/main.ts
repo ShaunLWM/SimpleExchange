@@ -28,10 +28,9 @@ book.on('order:new', () => {
 });
 
 book.on("transaction:new", (tx) => {
-  for (const [, socket] of Object.entries(users)) {
-    socket.emit("transaction:new", tx);
+  io.emit("transaction:new", tx);
+  console.log(`[updated] currentPrice: ${tx.price}`);
     startingPrice = tx.price as any;
-  }
 });
 
 io.on("connection", (socket) => {
