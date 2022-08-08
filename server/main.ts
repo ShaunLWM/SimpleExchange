@@ -1,9 +1,9 @@
-import * as express from "express";
+import cors from 'cors';
+import express from "express";
 import { createServer } from "http";
-import { Server, Socket } from "socket.io";
 import { OrderBook } from "lob.js";
+import { Server, Socket } from "socket.io";
 import { getRandomFloat, getRandomInt } from "./lib/Helper";
-import * as cors from 'cors';
 
 const app = express();
 app.use(cors({ origin: '*' }));
