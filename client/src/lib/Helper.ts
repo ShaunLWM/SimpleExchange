@@ -8,3 +8,7 @@ export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('ht
 export function timeAgo(time: number) {
   return dayjs().to(time);
 }
+
+export function formatTime(time: number) {
+  return dayjs(time).format('HH:mm:ss');
+}
