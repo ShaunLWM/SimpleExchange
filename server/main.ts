@@ -22,9 +22,7 @@ let startingPrice = getRandomFloat(randomMinNumber, randomMaxNumber, 2);
 const users: Record<string, Socket> = {};
 
 book.on('order:new', () => {
-  for (const [, socket] of Object.entries(users)) {
-    socket.emit("orderbook:init", book.getSimpleBook());
-  }
+  io.emit("orderbook:init", book.getSimpleBook());
 });
 
 book.on("transaction:new", (tx) => {
