@@ -53,13 +53,11 @@ io.on("connection", (socket) => {
 
 function createNewOrder() {
   setTimeout(async () => {
-    const side = getRandomInt(0, 1);
-    // side 0 = bid, 1 = ask
     const order = {
       type: "limit",
-      price: Number((startingPrice + (side === 0 ? getRandomFloat(0.1, 0.2, 2) * -1 : getRandomFloat(0.1, 0.2, 2))).toFixed(2)),
-      side: side === 0 ? "bid" : "ask",
-      quantity: getRandomFloat(0.1, 10, 5),
+      price: 0,
+      side: "bid",
+      quantity: 0,
     };
 
     const USERS = [
@@ -103,29 +101,35 @@ function createNewOrder() {
         order.quantity = getRandomFloat(8, 15, 5);
         console.log(`[🐋 ask]\t\t${order.price}\t\t${order.quantity}`);
         break;
-      case USER_TYPE.WHALE_PUMP_BUY: {
-        order.side = "ask";
+      case USER_TYPE.WHALE_PUMP_BUY:
+        // when you want price to pump, you need to submit a BID order to buy all the ASKs
+        // current ASK -> $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
+        // buy everything at $100 each, essentially buying all the ASKs and making the last transaction price $10
         const bestAsk = book.getBestAsk();
         if (bestAsk === null) {
-          return;
-        }
-
-        order.price = parseFloat((bestAsk + getRandomFloat(0.3, 0.5, 2)).toFixed(2));
-        order.quantity = getRandomFloat(8, 15, 5);
-        console.log(`[💰 pump]\t\t${order.price}\t\t${order.quantity}`);
-        break;
-      }
-      case USER_TYPE.WHALE_DUMP_SELL:
-        const bestBid = book.getBestBid();
-        if (bestBid === null) {
-          return;
+          break;
         }
 
         order.side = "bid";
-        order.price = parseFloat((bestBid - getRandomFloat(0.3, 0.5, 2)).toFixed(2));
-        order.quantity = getRandomFloat(8, 15, 5);
+        order.price = parseFloat((bestAsk + 2).toFixed(2));
+        order.quantity = getRandomFloat(20, 50, 5);
+        console.log(`[💰 pump]\t\t${order.price}\t\t${order.quantity}`);
+        break;
+      case USER_TYPE.WHALE_DUMP_SELL: {
+        // when you want price to dump, you need to submit a ASK order to buy all the BIDs
+        // current BID -> $5, $4, $3, $2, $1
+        // buy everything at $10 each, essentially buying all the BIDs and making the last transaction price $1
+        const bestBid = book.getBestBid();
+        if (bestBid === null) {
+          break;
+        }
+
+        order.side = "ask";
+        order.price = parseFloat((bestBid - 2).toFixed(2));
+        order.quantity = getRandomFloat(20, 50, 5);
         console.log(`[💰 dump]\t\t${order.price}\t\t${order.quantity}`);
         break;
+      }
       default:
         break
     }
@@ -148,9 +152,13 @@ function createNewOrder() {
     //     break;
     // }
     // await sleep(10000);
-    book.processOrder(order);
+    if (order.price !== 0 && order.quantity !== 0) {
+      book.processOrder(order);
+    }
     createNewOrder();
-  }, 5000);
+  }, getRandomInt(1000, 2000));
+  // we have to make sure processOrder emits new tx data to update the current price before we can process another order.
+  // so our setTimeout cannot be too short
 }
 
 httpServer.listen(8081, () => {
