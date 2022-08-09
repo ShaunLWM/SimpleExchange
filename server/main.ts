@@ -4,7 +4,7 @@ import { createServer } from "http";
 import { OrderBook } from "lob.js";
 import { Server, Socket } from "socket.io";
 import { USER_TYPE } from './lib/Constants';
-import { getRandomFloat, getRandomInt } from "./lib/Helper";
+import { getRandomFloat, getRandomInt, sleep } from "./lib/Helper";
 
 const app = express();
 app.use(cors({ origin: '*' }));
@@ -52,7 +52,7 @@ io.on("connection", (socket) => {
 });
 
 function createNewOrder() {
-  setTimeout(() => {
+  setTimeout(async () => {
     const side = getRandomInt(0, 1);
     // side 0 = bid, 1 = ask
     const order = {
@@ -62,7 +62,6 @@ function createNewOrder() {
       quantity: getRandomFloat(0.1, 10, 5),
     };
 
-    // TODO: array of enums instead
     const USERS = [
       USER_TYPE.NORMAL_LIMIT_ORDER_BUY, // normal buy
       USER_TYPE.NORMAL_LIMIT_ORDER_BUY,
@@ -77,6 +76,7 @@ function createNewOrder() {
       USER_TYPE.WHALE_PUMP_BUY,
       USER_TYPE.WHALE_DUMP_SELL
     ];
+
     const generatedUser = USERS[getRandomInt(0, USERS.length - 1)];
     switch (generatedUser) {
       case USER_TYPE.NORMAL_LIMIT_ORDER_BUY:
@@ -105,13 +105,23 @@ function createNewOrder() {
         break;
       case USER_TYPE.WHALE_PUMP_BUY:
         order.side = "bid";
-        order.price = startingPrice;
+        const bestBid = book.getBestBid()
+        if (bestBid === null) {
+          return;
+        }
+
+        order.price = parseFloat((bestBid - getRandomFloat(0.3, 0.5, 2)).toFixed(2));
         order.quantity = getRandomFloat(8, 15, 5);
         console.log(`[💰 bid]\t\t${order.price}\t\t${order.quantity}`);
         break;
       case USER_TYPE.WHALE_DUMP_SELL:
+        const bestAsk = book.getBestAsk();
+        if (bestAsk === null) {
+          return;
+        }
+
         order.side = "ask";
-        order.price = startingPrice;
+        order.price = parseFloat((bestAsk + getRandomFloat(0.3, 0.5, 2)).toFixed(2));
         order.quantity = getRandomFloat(8, 15, 5);
         console.log(`[💰 ask]\t\t${order.price}\t\t${order.quantity}`);
         break;
@@ -119,6 +129,24 @@ function createNewOrder() {
         break
     }
 
+    // console.log(`---------- [debug] new order ----------`);
+    // const bestBid = book.getBestBid();
+    // const bestAsk = book.getBestAsk();
+    // console.log(`[best ask]: ${book.getBestAsk()}`, `[best bid] ${book.getBestBid()}`);
+    // console.log(order);
+    // switch (order.side) {
+    //   case "bid":
+    //     if (bestAsk !== null && order.price > bestAsk) {
+    //       console.log(`[op] new transaction for ${bestAsk}`);
+    //     }
+    //     break;
+    //   case "ask":
+    //     if (bestBid !== null && order.price < bestBid) {
+    //       console.log(`[op] new transaction for ${bestBid}`);
+    //     }
+    //     break;
+    // }
+    // await sleep(10000);
     book.processOrder(order);
     createNewOrder();
   }, getRandomInt(500, 1000));
