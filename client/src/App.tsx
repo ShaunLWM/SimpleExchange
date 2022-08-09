@@ -6,6 +6,7 @@ import { socket } from './lib/Helper';
 import { Providers } from './lib/Providers';
 
 const MAX_ENTRIES = 5;
+const MAX_TRANSACTIONS = 12;
 
 export function App() {
   const [book, setBook] = useState<SimpleBook | undefined>();
@@ -34,8 +35,8 @@ export function App() {
     socket.on("transaction:new", (tx) => {
       console.log('newtx', tx);
       setTxs(prev => {
-        if (prev.length === 5) {
-          return [tx, ...prev.slice(0, 4)];
+        if (prev.length === MAX_TRANSACTIONS) {
+          return [tx, ...prev.slice(0, MAX_TRANSACTIONS - 1)];
         }
 
         return [tx, ...prev];
