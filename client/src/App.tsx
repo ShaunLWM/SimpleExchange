@@ -12,6 +12,7 @@ export function App() {
   const [book, setBook] = useState<SimpleBook | undefined>();
   const [txs, setTxs] = useState<TransactionRecord[]>([]);
   const [price, setPrice] = useState<number>(0);
+  const [history, setHistory] = useState<number[]>([]);
 
   useEffect(() => {
     socket.on('connect', () => {
@@ -21,6 +22,10 @@ export function App() {
 
     socket.on('orderbook:current', (price) => {
       setPrice(price);
+      setHistory(prev => {
+        const newHistory = [price, ...prev];
+        return newHistory.length > MAX_TRANSACTIONS ? newHistory.slice(0, MAX_TRANSACTIONS) : newHistory;
+      });
     });
 
     socket.on('orderbook:init', (data) => {
@@ -47,11 +52,13 @@ export function App() {
       socket.off('orderbook:init');
     }
   }, []);
+
   return (
     <Providers>
       <Flex flexDir="row" justifyContent="center">
         {book && <OrderBook book={book} price={price} />}
         <TransactionList txs={txs} />
+        <Flex flexDir="column">{history.map((price, i) => <div>{price}</div>)}</Flex>
       </Flex>
     </Providers>
   );
