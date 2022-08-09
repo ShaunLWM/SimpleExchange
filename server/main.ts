@@ -30,9 +30,6 @@ book.on('order:new', () => {
 
 book.on("transaction:new", (tx) => {
   io.emit("transaction:new", tx);
-  // console.log(`[updated] currentPrice: ${tx.price}`);
-  startingPrice = tx.price as any;
-  io.emit("orderbook:current", startingPrice);
 });
 
 io.on("connection", (socket) => {
@@ -160,13 +157,15 @@ function createNewOrder() {
     // }
     // await sleep(10000);
     if (order.price !== 0 && order.quantity !== 0) {
-      book.processOrder(order);
+      const { trades } = book.processOrder(order);
+      if (Array.isArray(trades) && trades.length > 0) {
+        startingPrice = trades[trades.length - 1].price;
+        io.emit("orderbook:current", startingPrice);
+      }
       currentIterations += 1;
     }
     createNewOrder();
-  }, getRandomInt(1000, 2000));
-  // we have to make sure processOrder emits new tx data to update the current price before we can process another order.
-  // so our setTimeout cannot be too short
+  }, getRandomInt(100, 500));
 }
 
 httpServer.listen(8081, () => {
