@@ -58,7 +58,7 @@ export function App() {
       <Flex flexDir="row" justifyContent="center">
         {book && <OrderBook book={book} price={price} />}
         <TransactionList txs={txs} />
-        <Flex flexDir="column">{history.map((price, i) => <div>{price}</div>)}</Flex>
+        <Flex flexDir="column">{history.map((price, i) => <div>{price.toFixed(2)}</div>)}</Flex>
       </Flex>
     </Providers>
   );
