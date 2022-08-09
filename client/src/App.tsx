@@ -1,6 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { OrderBook } from './components/OrderBook';
+import PriceChart from './components/PriceChart';
 import { TransactionList } from './components/TransactionList';
 import { socket } from './lib/Helper';
 import { Providers } from './lib/Providers';
@@ -56,6 +57,7 @@ export function App() {
   return (
     <Providers>
       <Flex flexDir="row" justifyContent="center">
+        <PriceChart history={history} />
         {book && <OrderBook book={book} price={price} />}
         <TransactionList txs={txs} />
         <Flex flexDir="column">{history.map((price, i) => <div>{price.toFixed(2)}</div>)}</Flex>
