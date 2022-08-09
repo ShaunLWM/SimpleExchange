@@ -173,9 +173,7 @@ httpServer.listen(8081, () => {
   console.log("listening on port 8081");
 
   console.log(`[setup] min: ${randomMinNumber}, max ${randomMaxNumber}, startingPrice: ${startingPrice}`);
-  const ordersCount = getRandomInt(1, 20);
-  console.log(`[setup] processing ${ordersCount} orders for asks and bids respectively`);
-  for (let i = 0; i < ordersCount; i++) {
+  for (let i = 0; i < 100; i++) {
     book.processOrder({
       type: "limit",
       price: Number((startingPrice + (getRandomFloat(0.1, 0.5, 2) * -1)).toFixed(2)),
