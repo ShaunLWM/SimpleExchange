@@ -63,7 +63,20 @@ function createNewOrder() {
     };
 
     // TODO: array of enums instead
-    const USERS = [USER_TYPE.NORMAL_LIMIT_ORDER_BUY, USER_TYPE.NORMAL_LIMIT_ORDER_BUY, USER_TYPE.NORMAL_LIMIT_ORDER_BUY, USER_TYPE.NORMAL_LIMIT_ORDER_BUY, USER_TYPE.NORMAL_LIMIT_ORDER_SELL, USER_TYPE.NORMAL_LIMIT_ORDER_SELL, USER_TYPE.NORMAL_LIMIT_ORDER_SELL, USER_TYPE.NORMAL_LIMIT_ORDER_SELL, USER_TYPE.WHALE_LIMIT_ORDER_BUY, USER_TYPE.WHALE_LIMIT_ORDER_SELL, USER_TYPE.WHALE_DUMP_SELL];
+    const USERS = [
+      USER_TYPE.NORMAL_LIMIT_ORDER_BUY, // normal buy
+      USER_TYPE.NORMAL_LIMIT_ORDER_BUY,
+      USER_TYPE.NORMAL_LIMIT_ORDER_BUY,
+      USER_TYPE.NORMAL_LIMIT_ORDER_BUY,
+      USER_TYPE.NORMAL_LIMIT_ORDER_SELL, // normal sell
+      USER_TYPE.NORMAL_LIMIT_ORDER_SELL,
+      USER_TYPE.NORMAL_LIMIT_ORDER_SELL,
+      USER_TYPE.NORMAL_LIMIT_ORDER_SELL,
+      USER_TYPE.WHALE_LIMIT_ORDER_BUY,
+      USER_TYPE.WHALE_LIMIT_ORDER_SELL,
+      USER_TYPE.WHALE_PUMP_BUY,
+      USER_TYPE.WHALE_DUMP_SELL
+    ];
     const generatedUser = USERS[getRandomInt(0, USERS.length - 1)];
     switch (generatedUser) {
       case USER_TYPE.NORMAL_LIMIT_ORDER_BUY:
@@ -89,6 +102,12 @@ function createNewOrder() {
         order.price = Number((startingPrice + (getRandomFloat(0.1, 0.3, 2) * -1)).toFixed(2));
         order.quantity = getRandomFloat(8, 15, 5);
         console.log(`[🐋 ask]\t\t${order.price}\t\t${order.quantity}`);
+        break;
+      case USER_TYPE.WHALE_PUMP_BUY:
+        order.side = "bid";
+        order.price = startingPrice;
+        order.quantity = getRandomFloat(8, 15, 5);
+        console.log(`[💰 bid]\t\t${order.price}\t\t${order.quantity}`);
         break;
       case USER_TYPE.WHALE_DUMP_SELL:
         order.side = "ask";
