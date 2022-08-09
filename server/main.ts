@@ -30,6 +30,7 @@ book.on("transaction:new", (tx) => {
   io.emit("transaction:new", tx);
   // console.log(`[updated] currentPrice: ${tx.price}`);
   startingPrice = tx.price as any;
+  io.emit("orderbook:current", startingPrice);
 });
 
 io.on("connection", (socket) => {

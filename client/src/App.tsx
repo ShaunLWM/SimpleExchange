@@ -18,10 +18,6 @@ export function App() {
       socket.emit('orderbook:init');
     });
 
-    setInterval(() => {
-      socket.emit('orderbook:current');
-    }, 1000);
-
     socket.on('orderbook:current', (price) => {
       setPrice(price);
     });
