@@ -103,27 +103,28 @@ function createNewOrder() {
         order.quantity = getRandomFloat(8, 15, 5);
         console.log(`[🐋 ask]\t\t${order.price}\t\t${order.quantity}`);
         break;
-      case USER_TYPE.WHALE_PUMP_BUY:
-        order.side = "bid";
-        const bestBid = book.getBestBid()
-        if (bestBid === null) {
-          return;
-        }
-
-        order.price = parseFloat((bestBid - getRandomFloat(0.3, 0.5, 2)).toFixed(2));
-        order.quantity = getRandomFloat(8, 15, 5);
-        console.log(`[💰 bid]\t\t${order.price}\t\t${order.quantity}`);
-        break;
-      case USER_TYPE.WHALE_DUMP_SELL:
+      case USER_TYPE.WHALE_PUMP_BUY: {
+        order.side = "ask";
         const bestAsk = book.getBestAsk();
         if (bestAsk === null) {
           return;
         }
 
-        order.side = "ask";
         order.price = parseFloat((bestAsk + getRandomFloat(0.3, 0.5, 2)).toFixed(2));
         order.quantity = getRandomFloat(8, 15, 5);
-        console.log(`[💰 ask]\t\t${order.price}\t\t${order.quantity}`);
+        console.log(`[💰 pump]\t\t${order.price}\t\t${order.quantity}`);
+        break;
+      }
+      case USER_TYPE.WHALE_DUMP_SELL:
+        const bestBid = book.getBestBid();
+        if (bestBid === null) {
+          return;
+        }
+
+        order.side = "bid";
+        order.price = parseFloat((bestBid - getRandomFloat(0.3, 0.5, 2)).toFixed(2));
+        order.quantity = getRandomFloat(8, 15, 5);
+        console.log(`[💰 dump]\t\t${order.price}\t\t${order.quantity}`);
         break;
       default:
         break
@@ -149,7 +150,7 @@ function createNewOrder() {
     // await sleep(10000);
     book.processOrder(order);
     createNewOrder();
-  }, getRandomInt(500, 1000));
+  }, 5000);
 }
 
 httpServer.listen(8081, () => {
