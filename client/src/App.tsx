@@ -25,7 +25,7 @@ export function App() {
 
     socket.on('orderbook:init', (data) => {
       data.asks.sort((a, b) => b.price - a.price);
-      data.bids.sort((a, b) => a.price - b.price);
+      data.bids.sort((a, b) => b.price - a.price);
       setBook({
         asks: data.asks.length > MAX_ENTRIES ? data.asks.slice(-MAX_ENTRIES) : data.asks,
         bids: data.bids.slice(0, MAX_ENTRIES),
