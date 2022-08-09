@@ -45,5 +45,6 @@ export declare global {
     quantity: number;
     time: number;
     txId: string;
+    side: "ask" | "bid";
   }
 }
