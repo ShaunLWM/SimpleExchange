@@ -4,7 +4,7 @@ import { createServer } from "http";
 import { OrderBook } from "lob.js";
 import { Server, Socket } from "socket.io";
 import { USER_TYPE } from './lib/Constants';
-import { getRandomFloat, getRandomInt, sleep } from "./lib/Helper";
+import { getRandomFloat, getRandomInt } from "./lib/Helper";
 
 const app = express();
 app.use(cors({ origin: '*' }));
@@ -19,6 +19,8 @@ const book = new OrderBook();
 const randomMaxNumber = getRandomInt(10, 100);
 const randomMinNumber = getRandomInt(1, randomMaxNumber);
 let startingPrice = getRandomFloat(randomMinNumber, randomMaxNumber, 2);
+const ITERATIONS_BEFORE_WHALES_ENTER = 50;
+let currentIterations = 0;
 
 const users: Record<string, Socket> = {};
 
@@ -69,11 +71,16 @@ function createNewOrder() {
       USER_TYPE.NORMAL_LIMIT_ORDER_SELL,
       USER_TYPE.NORMAL_LIMIT_ORDER_SELL,
       USER_TYPE.NORMAL_LIMIT_ORDER_SELL,
-      USER_TYPE.WHALE_LIMIT_ORDER_BUY,
-      USER_TYPE.WHALE_LIMIT_ORDER_SELL,
-      USER_TYPE.WHALE_PUMP_BUY,
-      USER_TYPE.WHALE_DUMP_SELL
     ];
+
+    if (currentIterations >= ITERATIONS_BEFORE_WHALES_ENTER) {
+      USERS.push(...[
+        USER_TYPE.WHALE_LIMIT_ORDER_BUY,
+        USER_TYPE.WHALE_LIMIT_ORDER_SELL,
+        USER_TYPE.WHALE_PUMP_BUY,
+        USER_TYPE.WHALE_DUMP_SELL
+      ]);
+    }
 
     const generatedUser = USERS[getRandomInt(0, USERS.length - 1)];
     switch (generatedUser) {
@@ -154,6 +161,7 @@ function createNewOrder() {
     // await sleep(10000);
     if (order.price !== 0 && order.quantity !== 0) {
       book.processOrder(order);
+      currentIterations += 1;
     }
     createNewOrder();
   }, getRandomInt(1000, 2000));
