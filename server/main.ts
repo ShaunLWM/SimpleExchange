@@ -118,7 +118,7 @@ function createNewOrder() {
         }
 
         order.side = "bid";
-        order.price = parseFloat((bestAsk + 2).toFixed(2));
+        order.price = parseFloat((bestAsk + getRandomInt(2, 5)).toFixed(2));
         order.quantity = getRandomFloat(20, 50, 5);
         console.log(`[💰 pump]\t\t${order.price}\t\t${order.quantity}`);
         break;
@@ -132,7 +132,7 @@ function createNewOrder() {
         }
 
         order.side = "ask";
-        order.price = parseFloat((bestBid - 2).toFixed(2));
+        order.price = parseFloat((bestBid - getRandomInt(2, 5)).toFixed(2));
         order.quantity = getRandomFloat(20, 50, 5);
         console.log(`[💰 dump]\t\t${order.price}\t\t${order.quantity}`);
         break;
