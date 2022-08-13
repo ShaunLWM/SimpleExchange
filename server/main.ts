@@ -109,15 +109,10 @@ function createNewOrder() {
         // when you want price to pump, you need to submit a BID order to buy all the ASKs
         // current ASK -> $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
         // buy everything at $100 each, essentially buying all the ASKs and making the last transaction price $10
-        const bestAsk = book.getBestAsk();
-        if (bestAsk === null) {
-          break;
-        }
-
+        order.type = "market";
         order.side = "bid";
-        order.price = parseFloat((bestAsk + getRandomInt(2, 5)).toFixed(2));
         order.quantity = getRandomFloat(20, 50, 5);
-        console.log(`[💰 pump]\t\t${order.price}\t\t${order.quantity}`);
+        console.log(`[💰 pump]\t\t-\t\t${order.quantity}`);
         break;
       case USER_TYPE.WHALE_DUMP_SELL: {
         // when you want price to dump, you need to submit a ASK order to buy all the BIDs
@@ -128,10 +123,10 @@ function createNewOrder() {
           break;
         }
 
+        order.type = "market";
         order.side = "ask";
-        order.price = parseFloat((bestBid - getRandomInt(2, 5)).toFixed(2));
         order.quantity = getRandomFloat(20, 50, 5);
-        console.log(`[💰 dump]\t\t${order.price}\t\t${order.quantity}`);
+        console.log(`[💰 dump]\t\t-\t\t${order.quantity}`);
         break;
       }
       default:
