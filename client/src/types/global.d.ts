@@ -33,6 +33,7 @@ export declare global {
   interface SimpleBookRecord {
     price: number;
     volume: number;
+    incremental?: number;
   }
 
   interface SimpleBook {

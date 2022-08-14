@@ -1,5 +1,6 @@
 
 import { Box, Flex } from "@chakra-ui/react";
+import { GREEN_COLOR, RED_COLOR } from "../lib/Constants";
 
 interface Props {
   book: SimpleBook;
@@ -11,7 +12,8 @@ export function OrderBook(props: Props) {
 
   const renderRow = (type: "bid" | "ask", record: SimpleBookRecord) => {
     return (
-      <Flex flexDir="row">
+      <Flex flexDir="row" position="relative">
+        <Flex position="absolute" top={0} bottom={0} left={0} bgColor={type === "ask" ? RED_COLOR : GREEN_COLOR} width={`${((record.incremental ?? 1) / 100) * 100}%`} />
         <Box flexBasis="100px">${record.price.toFixed(2)}</Box>
         <Box>{record.volume}</Box>
       </Flex>

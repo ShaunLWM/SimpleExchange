@@ -30,11 +30,13 @@ export function App() {
     });
 
     socket.on('orderbook:init', (data) => {
-      data.asks.sort((a, b) => b.price - a.price);
+      let asksVolume = 0;
+      let bidsVolume = 0;
+      data.asks.sort((a, b) => a.price - b.price);
       data.bids.sort((a, b) => b.price - a.price);
       setBook({
-        asks: data.asks.length > MAX_ENTRIES ? data.asks.slice(-MAX_ENTRIES) : data.asks,
-        bids: data.bids.slice(0, MAX_ENTRIES),
+        asks: data.asks.slice(0, MAX_ENTRIES).map(ask => ({ ...ask, incremental: asksVolume += ask.volume })).reverse(),
+        bids: data.bids.slice(0, MAX_ENTRIES).map(bid => ({ ...bid, incremental: bidsVolume += bid.volume })),
       });
     });
 
