@@ -106,6 +106,7 @@ function createNewOrder() {
         console.log(`[🐋 ask]\t\t${order.price}\t\t${order.quantity}`);
         break;
       case USER_TYPE.WHALE_PUMP_BUY:
+        // TODO: Properly get orderbook steps and add them all up instead of using random
         // when you want price to pump, you need to submit a BID order to buy all the ASKs
         // current ASK -> $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
         // buy everything at $100 each, essentially buying all the ASKs and making the last transaction price $10
@@ -115,6 +116,7 @@ function createNewOrder() {
         console.log(`[💰 pump]\t\t-\t\t${order.quantity}`);
         break;
       case USER_TYPE.WHALE_DUMP_SELL: {
+        // TODO: Properly get orderbook steps and add them all up instead of using random
         // when you want price to dump, you need to submit a ASK order to buy all the BIDs
         // current BID -> $5, $4, $3, $2, $1
         // buy everything at $10 each, essentially buying all the BIDs and making the last transaction price $1
