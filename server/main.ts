@@ -83,25 +83,25 @@ function createNewOrder() {
     switch (generatedUser) {
       case USER_TYPE.NORMAL_LIMIT_ORDER_BUY:
         order.side = "bid";
-        order.price = Number((startingPrice + (getRandomFloat(0.1, 0.3, 2))).toFixed(2));
+        order.price = Number((startingPrice + (getRandomFloat(3, 10, 2))).toFixed(2));
         order.quantity = getRandomFloat(0.1, 5, 5);
         console.log(`[🦐 bid]\t\t${order.price}\t\t${order.quantity}`);
         break;
       case USER_TYPE.NORMAL_LIMIT_ORDER_SELL:
         order.side = "ask";
-        order.price = Number((startingPrice + (getRandomFloat(0.1, 0.3, 2) * -1)).toFixed(2));
+        order.price = Number((startingPrice + (getRandomFloat(3, 10, 2) * -1)).toFixed(2));
         order.quantity = getRandomFloat(0.1, 5, 5);
         console.log(`[🦐 ask]\t\t${order.price}\t\t${order.quantity}`);
         break;
       case USER_TYPE.WHALE_LIMIT_ORDER_BUY:
         order.side = "bid";
-        order.price = Number((startingPrice + (getRandomFloat(0.1, 0.3, 2) * -1)).toFixed(2));
+        order.price = Number((startingPrice + (getRandomFloat(3, 10, 2) * -1)).toFixed(2));
         order.quantity = getRandomFloat(8, 15, 5);
         console.log(`[🐋 bid]\t\t${order.price}\t\t${order.quantity}`);
         break;
       case USER_TYPE.WHALE_LIMIT_ORDER_SELL:
         order.side = "ask";
-        order.price = Number((startingPrice + (getRandomFloat(0.1, 0.3, 2) * -1)).toFixed(2));
+        order.price = Number((startingPrice + (getRandomFloat(3, 10, 2) * -1)).toFixed(2));
         order.quantity = getRandomFloat(8, 15, 5);
         console.log(`[🐋 ask]\t\t${order.price}\t\t${order.quantity}`);
         break;
@@ -177,13 +177,13 @@ httpServer.listen(8081, () => {
   for (let i = 0; i < 100; i++) {
     book.processOrder({
       type: "limit",
-      price: Number((startingPrice + (getRandomFloat(0.1, 0.5, 2) * -1)).toFixed(2)),
+      price: Number((startingPrice + (getRandomFloat(3, 10, 2) * -1)).toFixed(2)),
       side: "bid",
       quantity: getRandomFloat(0.1, 10, 5),
     });
     book.processOrder({
       type: "limit",
-      price: Number((startingPrice + getRandomFloat(0.1, 0.5, 2)).toFixed(2)),
+      price: Number((startingPrice + getRandomFloat(3, 10, 2)).toFixed(2)),
       side: "ask",
       quantity: getRandomFloat(0.1, 10, 5),
     });
