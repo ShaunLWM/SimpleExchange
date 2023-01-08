@@ -110,6 +110,11 @@ function createNewOrder() {
         // when you want price to pump, you need to submit a BID order to buy all the ASKs
         // current ASK -> $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
         // buy everything at $100 each, essentially buying all the ASKs and making the last transaction price $10
+        const bestAsk = book.getBestAsk();
+        if (bestAsk === null) {
+          return;
+        }
+
         order.type = "market";
         order.side = "bid";
         order.quantity = getRandomFloat(20, 50, 5);
