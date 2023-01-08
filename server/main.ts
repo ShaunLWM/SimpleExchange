@@ -117,7 +117,7 @@ function createNewOrder() {
 
         order.type = "market";
         order.side = "bid";
-        order.quantity = getRandomFloat(20, 50, 5);
+        order.quantity = book.getSimpleAsks().slice(Math.min(3, book.getSimpleAsks().length) * -1).reduce((acc, ask) => acc + ask.volume, 0);
         console.log(`[💰 pump]\t\t-\t\t${order.quantity}`);
         break;
       case USER_TYPE.WHALE_DUMP_SELL: {
@@ -132,7 +132,7 @@ function createNewOrder() {
 
         order.type = "market";
         order.side = "ask";
-        order.quantity = getRandomFloat(20, 50, 5);
+        order.quantity = book.getSimpleBids().slice(Math.min(5, book.getSimpleBids().length) * -1).reduce((acc, bid) => acc + bid.volume, 0);
         console.log(`[💰 dump]\t\t-\t\t${order.quantity}`);
         break;
       }
